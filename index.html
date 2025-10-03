@@ -1,141 +1,356 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Recursividad en Algoritmos</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Recursividad en Ciencias Computacionales</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        :root {
+            --primary-color: #0077b6;
+            --secondary-color: #00b4d8;
+            --accent-color: #90e0ef;
+            --text-dark: #2c3e50;
+            --text-light: #ecf0f1;
+            --bg-light: #ffffff;
+            --bg-soft: #f8f9fa;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --code-bg: #e8e8e8;
+            --border-radius: 8px;
+        }
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background: var(--bg-soft);
             line-height: 1.6;
-            background-color: #f9f9f9;
-            color: #333;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Merriweather', serif;
+            margin-bottom: 0.8em;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        h1 { font-size: 2.5em; }
+        h2 { font-size: 2em; margin-top: 1.5em; border-bottom: 2px solid var(--accent-color); padding-bottom: 5px;}
+        h3 { font-size: 1.5em; color: var(--text-dark); }
+        h4 { font-size: 1.2em; color: var(--primary-color); }
+        p, ul, ol {
+            margin-bottom: 1.2em;
+            text-align: justify;
+        }
+        a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+        .wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg-light);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         header {
-            background-color: #004d99;
-            color: #fff;
-            padding: 2rem 1rem;
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: var(--primary-color);
+            color: var(--text-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        header h1 {
-            margin: 0;
+        .brand {
+            font-family: "Merriweather", serif;
+            font-weight: 900;
+            font-size: 24px;
+            color: var(--text-light);
+        }
+        nav a {
+            color: var(--text-light);
+            margin-left: 20px;
+            font-size: 15px;
+            padding: 5px 0;
+            border-bottom: 2px solid transparent;
+            transition: border-bottom 0.3s, color 0.3s;
+        }
+        nav a:hover {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            text-decoration: none;
+        }
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 450px;
+        }
+        .hero-left {
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Recursion_example_russian_dolls.svg/1024px-Recursion_example_russian_dolls.svg.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .hero-right {
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: var(--bg-light);
+        }
+        .badge {
+            font-size: 14px;
+            color: var(--primary-color);
             font-weight: 700;
-            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
         }
-        header p {
-            font-size: 1.1rem;
-            margin-top: 0.5rem;
-            font-style: italic;
+        .hero-title {
+            font-size: 38px;
+            margin: 0 0 15px 0;
+            color: var(--text-dark);
+            line-height: 1.2;
         }
-        main {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 0 1rem;
+        .hero-desc {
+            color: #555;
+            margin-bottom: 25px;
+            max-width: 500px;
+            font-size: 17px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: var(--primary-color);
+            color: var(--text-light);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            transition: background 0.3s, transform 0.2s;
+            max-width: 200px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 119, 182, 0.2);
+        }
+        .btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            text-decoration: none;
         }
         section {
-            background-color: #fff;
-            margin-bottom: 2rem;
-            padding: 1.5rem 2rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+            padding: 40px 80px;
+            background: var(--bg-light);
+            margin-bottom: 20px;
         }
-        section h2 {
-            border-bottom: 2px solid #004d99;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-            color: #004d99;
+        .impact, .conclusion-section {
+            background: var(--bg-soft);
+            padding: 30px 80px;
+            border-left: 5px solid var(--accent-color);
+            margin-bottom: 40px;
         }
-        code {
-            background-color: #eaeaea;
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
-            font-family: Consolas, "Courier New", monospace;
+        .impact h3 { color: var(--text-dark); }
+        ol, ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        .info-box {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: #e3f2fd; 
+            border-left: 5px solid var(--secondary-color);
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5em;
+        }
+        .info-box h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
         }
         pre {
-            background-color: #eaeaea;
-            padding: 1rem;
-            border-radius: 6px;
+            background: var(--code-bg);
+            padding: 15px;
+            border-radius: 4px;
             overflow-x: auto;
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 0.95em;
+            margin-bottom: 1.5em;
+            border: 1px solid #dcdcdc;
+            white-space: pre-wrap;
         }
-        img.diagram {
-            display: block;
-            margin: 1rem auto;
-            max-width: 100%;
+        .image-container {
+            text-align: center;
+            margin: 30px 0;
+            background: var(--bg-soft);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+        }
+        .image-container img {
+            max-width: 90%;
             height: auto;
+            border-radius: var(--border-radius);
             border: 1px solid #ddd;
-            border-radius: 8px;
         }
-        footer {
-            background-color: #004d99;
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
-            font-size: 0.9rem;
+        .image-container p {
+            font-style: italic;
+            color: #666;
+            margin-top: 10px;
+            font-size: 0.9em;
         }
-        .visual-examples {
-            text-align: center;
+        #referencias {
+            background: var(--bg-light);
+            padding-bottom: 60px;
         }
-        .centered-text {
-            text-align: center;
+        #referencias h2 {
+            border-bottom: none;
+            color: var(--primary-color);
         }
-        ul.references {
-            text-align: left;
+        #referencias ul {
             list-style-type: none;
             padding-left: 0;
         }
-        ul.references li {
-            margin-bottom: 0.5rem;
+        #referencias li {
+            margin-bottom: 15px;
+            padding-left: 0;
+            color: #555;
+            border-bottom: 1px dashed #eee;
+            padding-bottom: 10px;
+        }
+        footer {
+            padding: 20px 40px;
+            border-top: 1px solid #ddd;
+            color: #777;
+            font-size: 14px;
+            text-align: center;
+            background: var(--bg-light);
+        }
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            .hero-left {
+                min-height: 250px;
+            }
+            header, section, .impact {
+                padding: 20px 30px;
+            }
+            .hero-right {
+                padding: 40px 30px;
+            }
+        }
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                padding: 15px 20px;
+            }
+            nav {
+                margin-top: 10px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            nav a {
+                margin: 5px 8px;
+                font-size: 13px;
+            }
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.6em; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Recursividad en Algoritmos</h1>
-        <p>Investigación y ejemplos prácticos sobre algoritmos recursivos en ciencias computacionales</p>
-        <img class="diagram" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Recursion_example_russian_dolls.svg/1024px-Recursion_example_russian_dolls.svg.png" alt="Ejemplo de recursividad con muñecas rusas" />
-    </header>
-    <main>
-        <section id="introduccion">
-            <h2>Introducción</h2>
-            <p>La recursividad es una técnica de programación en la que una función se llama a sí misma para resolver un problema dividiéndolo en subproblemas más simples. Es esencial en ciencias computacionales porque permite resolver problemas complejos con soluciones elegantes y claras.</p>
-            <p>Esta página presenta los fundamentos y ejemplos gráficos de cuatro algoritmos clásicos que emplean recursividad: el cálculo factorial, la sucesión de Fibonacci, las Torres de Hanói y los fractales.</p>
+
+    <div class="wrap" role="main">
+        <header>
+            <div class="brand">Recur<span style="color: var(--accent-color);">sividad</span></div>
+            <nav>
+                <a href="#introduccion"><i class="fas fa-lightbulb"></i> Introducción</a>
+                <a href="#factorial"><i class="fas fa-hashtag"></i> Factorial</a>
+                <a href="#fibonacci"><i class="fas fa-seedling"></i> Fibonacci</a>
+                <a href="#torres-hanoi"><i class="fas fa-cubes"></i> Torres de Hanói</a>
+                <a href="#fractales"><i class="fas fa-shapes"></i> Fractales</a>
+                <a href="#conclusion"><i class="fas fa-check-circle"></i> Conclusión</a>
+                <a href="#referencias"><i class="fas fa-book-open"></i> Referencias</a>
+            </nav>
+        </header>
+
+        <section id="introduccion" class="hero">
+            <div class="hero-left"></div>
+            <div class="hero-right">
+                <div class="badge">Concepto Clave en Computación</div>
+                <h1 class="hero-title">Recursividad en Ciencias Computacionales</h1>
+                <p class="hero-desc">
+                    La recursividad es un pilar fundamental que permite resolver problemas complejos dividiéndolos en versiones más simples de sí mismos.
+                </p>
+                <a class="btn" href="#factorial">Empezar Lectura &rarr;</a>
+            </div>
+        </section>
+
+        <section class="impact">
+            <h3>Importancia</h3>
+            <p>La <em>recursividad</em> es fundamental para estructurar algoritmos eficientes, simplificar soluciones a problemas inherentemente recursivos y profundizar la comprensión de procesos computacionales de "divide y vencerás".</p>
         </section>
 
         <section id="factorial">
-            <h2>Algoritmo Factorial</h2>
-            <p>El factorial de un número <code>n</code> (denotado como <code>n!</code>) es el producto de todos los enteros positivos desde 1 hasta <code>n</code>. Se define recursivamente como:</p>
+            <h2><i class="fas fa-hashtag"></i> Algoritmo Factorial</h2>
+            <p>El factorial de un número <code>n</code>, denotado <strong>n!</strong>, es el producto de todos los enteros positivos desde 1 hasta <code>n</code>. Se define recursivamente como:</p>
             <p><code>factorial(n) = n * factorial(n - 1)</code>, con <code>factorial(0) = 1</code>.</p>
+            <div class="image-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Factorial_recursive.svg/640px-Factorial_recursive.svg.png" alt="Diagrama recursivo factorial">
+                <p>Diagrama de llamadas recursivas para el cálculo factorial</p>
+            </div>
+            <h4>Ejemplo en JavaScript</h4>
             <pre><code>function factorial(n) {
     if (n === 0) return 1;
     return n * factorial(n - 1);
 }</code></pre>
-            <p>Diagrama de llamadas recursivas:</p>
-            <img class="diagram" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Factorial_recursive.svg/640px-Factorial_recursive.svg.png" alt="Diagrama recursivo para cálculo factorial" />
         </section>
 
         <section id="fibonacci">
-            <h2>Algoritmo Fibonacci</h2>
-            <p>La sucesión de Fibonacci es una serie donde cada número es la suma de los dos anteriores, comenzando con 0 y 1. La definición recursiva es:</p>
+            <h2><i class="fas fa-seedling"></i> Algoritmo Fibonacci</h2>
+            <p>La sucesión de Fibonacci es una serie donde cada número es la suma de los dos anteriores, comenzando con 0 y 1. Se define recursivamente:</p>
             <p><code>fibonacci(n) = fibonacci(n-1) + fibonacci(n-2)</code> con <code>fibonacci(0) = 0</code> y <code>fibonacci(1) = 1</code>.</p>
+            <div class="image-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Fibonacci_recursion_tree.svg/640px-Fibonacci_recursion_tree.svg.png" alt="Árbol recursivo Fibonacci">
+                <p>Árbol de llamadas recursivas para fibonacci(4)</p>
+            </div>
+            <h4>Ejemplo en JavaScript</h4>
             <pre><code>function fibonacci(n) {
     if (n === 0) return 0;
     if (n === 1) return 1;
     return fibonacci(n - 1) + fibonacci(n - 2);
 }</code></pre>
-            <p>Visualización del árbol recursivo para <code>fibonacci(4)</code>:</p>
-            <img class="diagram" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Fibonacci_recursion_tree.svg/640px-Fibonacci_recursion_tree.svg.png" alt="Árbol recursivo de Fibonacci" />
-            <p><em>Nota:</em> Este algoritmo tiene alta complejidad debido a llamadas repetidas.</p>
         </section>
 
-        <section id="torres-de-hanoi">
-            <h2>Torres de Hanói</h2>
-            <p>Las Torres de Hanói es un rompecabezas con tres postes y varios discos de distinto tamaño. El objetivo es mover todos los discos del poste inicial al poste destino, siguiendo reglas:</p>
-            <ul>
-                <li>Solo se puede mover un disco a la vez.</li>
-                <li>No se puede colocar un disco más grande sobre uno más pequeño.</li>
-            </ul>
-            <p>El algoritmo recursivo es:</p>
+        <section id="torres-hanoi">
+            <h2><i class="fas fa-cubes"></i> Torres de Hanói</h2>
+            <p>Las Torres de Hanói es un rompecabezas donde se deben mover discos entre postes con la regla de no poner disco más grande sobre uno más pequeño. Se resuelve recursivamente:</p>
+            <div class="image-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Tower_of_Hanoi_3.svg/640px-Tower_of_Hanoi_3.svg.png" alt="Torres de Hanói">
+                <p>Visualización de Torres de Hanói con 3 discos</p>
+            </div>
+            <h4>Ejemplo en JavaScript</h4>
             <pre><code>function hanoi(n, origen, destino, auxiliar) {
     if (n === 1) {
         console.log(`Mover disco 1 de ${origen} a ${destino}`);
@@ -145,46 +360,53 @@
     console.log(`Mover disco ${n} de ${origen} a ${destino}`);
     hanoi(n - 1, auxiliar, destino, origen);
 }</code></pre>
-            <p>Secuencia gráfica de movimiento para 3 discos:</p>
-            <img class="diagram" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Tower_of_Hanoi_3.svg/640px-Tower_of_Hanoi_3.svg.png" alt="Visualización Torres de Hanói con 3 discos" />
         </section>
 
         <section id="fractales">
-            <h2>Fractales</h2>
-            <p>Los fractales son figuras geométricas que se repiten a diferentes escalas, obtenidas con procesos recursivos. Suelen presentar autosemejanza.</p>
-            <p>Ejemplo: Triángulo de Sierpinski, se obtiene dividiendo un triángulo en cuatro triángulos más pequeños y quitando el central recursivamente.</p>
+            <h2><i class="fas fa-shapes"></i> Fractales</h2>
+            <p>Los fractales son figuras geométricas que se repiten a diferentes escalas, creadas mediante procesos recursivos, mostrando auto-similitud.</p>
+            <div class="image-container">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sierpinski_triangle.svg/640px-Sierpinski_triangle.svg.png" alt="Triángulo de Sierpinski">
+                <p>Triángulo de Sierpinski, un fractal generado recursivamente</p>
+            </div>
+            <h4>Ejemplo simple en JavaScript</h4>
             <pre><code>function sierpinski(depth) {
     if (depth === 0) {
         // Dibujar triángulo base
         return;
     }
+    // Llamadas recursivas para subdividir
     sierpinski(depth - 1);
     sierpinski(depth - 1);
     sierpinski(depth - 1);
 }</code></pre>
-            <p>Imagen representativa del triángulo de Sierpinski:</p>
-            <img class="diagram" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Sierpinski_triangle.svg/640px-Sierpinski_triangle.svg.png" alt="Triángulo de Sierpinski" />
         </section>
 
-        <section id="conclusion">
-            <h2>Conclusión</h2>
-            <p>La recursividad es una herramienta poderosa en ciencias computacionales que permite resolver problemas complejos de manera clara y elegante. Los algoritmos presentados demuestran cómo la recursión reduce problemas a subproblemas más simples y facilita soluciones estructuradas.</p>
-            <p>Comprender y aplicar correctamente la recursividad es fundamental para desarrollar algoritmos eficientes y para la enseñanza en programación y matemáticas.</p>
+        <section id="conclusion" class="conclusion-section" style="border-left-color: var(--primary-color);">
+            <h2><i class="fas fa-check-circle"></i> Conclusión sobre la Recursividad</h2>
+            <p>
+                La recursividad es una técnica esencial en ciencias computacionales para resolver problemas complejos dividiéndolos en problemas más simples. Facilita soluciones elegantes y comprensibles, aunque requiere atención en la gestión de memoria y optimización.
+            </p>
+            <p>
+                Los algoritmos recursivos como Factorial, Fibonacci, Torres de Hanói y fractales representan áreas donde esta técnica es indispensable, con aplicaciones en matemáticas, algoritmos y gráficos.
+            </p>
         </section>
 
         <section id="referencias">
-            <h2>Referencias</h2>
-            <ul class="references">
+            <h2><i class="fas fa-book-open"></i> Referencias</h2>
+            <ul>
                 <li>[1] T. H. Cormen, C. E. Leiserson, R. L. Rivest, y C. Stein, <i>Introduction to Algorithms</i>, 3ª ed. MIT Press, 2009.</li>
                 <li>[2] R. Sedgewick y K. Wayne, <i>Algorithms, 4th Edition</i>, Addison-Wesley, 2011.</li>
                 <li>[3] D. E. Knuth, <i>The Art of Computer Programming, Volume 1: Fundamental Algorithms</i>, 3ª ed. Addison-Wesley, 1997.</li>
                 <li>[4] B. Mandelbrot, <i>The Fractal Geometry of Nature</i>, W. H. Freeman, 1983.</li>
-                <li>[5] Wikipedia contributors, "Recursion," Wikipedia, The Free Encyclopedia. [Online]. Available: https://en.wikipedia.org/wiki/Recursion</li>
+                <li>[5] Wikipedia contributors, "Recursion," Wikipedia, The Free Encyclopedia.</li>
             </ul>
         </section>
-    </main>
-    <footer>
-        &copy; 2025 Recursividad en Algoritmos. Página desarrollada para GitHub Pages.
-    </footer>
+
+        <footer>
+            <p>&copy; 2025 - Recursividad en Ciencias Computacionales | Diseño Académico y Profesional.</p>
+        </footer>
+    </div>
 </body>
 </html>
+
